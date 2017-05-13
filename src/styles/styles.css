@@ -1,0 +1,17 @@
+.example {
+  background-color: #ffc107; }
+
+.root {
+  position: relative;
+  margin-top: 30px;
+  width: 100%; }
+
+.appBarTitle a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none !important; }
+
+.flex {
+  flex: 1; }
+
+/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowJs": true,
+    "checkJs": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "es5",
+      "es2015.promise",
+      "dom"
+    ],
+    "baseUrl": ".",
+    "plugins": [
+      {
+        "name": "ts-graphql-plugin",
+        "schema": "schema.json",
+        "tag": "gql"
+      }
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

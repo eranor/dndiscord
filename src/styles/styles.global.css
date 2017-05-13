@@ -1,0 +1,90 @@
+/* Regular @import url statements work as you'd expect them to -- alternatively
+you can import locally, and they wind up in the resulting bundle */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+@import "materializecss/waves.css";
+@import "materializecss/breadcrumbs.css";
+@import "materializecss/utility.css";
+@import "materializecss/mui-flex-grid.css";
+
+
+*{
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+html, body{
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+body > div > div {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+header, footer {
+  flex: 0 0 auto;
+}
+
+main {
+  padding: 20px 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.container {
+  margin: 0 auto;
+  width: 85%;
+}
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 85%;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 70%;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  .container {
+    width: 85%;
+  }
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+.example-appear {
+  opacity: 0.01;
+}
+
+.example-appear.example-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.character-card-header:hover {
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.1);
+}

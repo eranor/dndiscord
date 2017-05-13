@@ -1,0 +1,25 @@
+$background: #ffc107;
+
+.example {
+  background-color: $background;
+}
+
+.root {
+  position: relative;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.appBarTitle {
+  a {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none !important
+  }
+
+}
+
+.flex {
+  flex: 1
+}
+
