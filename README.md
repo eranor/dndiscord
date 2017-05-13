@@ -1,4 +1,4 @@
-#TIA Project - D&D manager
+# TIA Project - D&D manager
 
 # Work In Progress
 __NOTICE__: This repository is in active development.
