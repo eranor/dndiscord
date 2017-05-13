@@ -69,6 +69,9 @@ dist
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
 
+# DB Navigator plugin:
+.idea/**/dbnavigator.xml
+
 ## File-based project format:
 *.iws
 
