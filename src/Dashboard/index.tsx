@@ -12,8 +12,7 @@ import { withRouter } from 'react-router';
 
 import Collapsible  from 'react-collapsible';
 
-@withRouter
-export default class Dashboard extends React.Component<any, any> {
+class Dashboard extends React.Component<any, any> {
 
   constructor(props: any, context: any) {
     super(props, context);
@@ -60,7 +59,7 @@ export default class Dashboard extends React.Component<any, any> {
     this.setState({ 'value': 3 });
   };
 
-  handleChange = (value:number) => {
+  handleChange = (value: number) => {
     this.setState({ 'value': value });
   };
 
@@ -197,3 +196,5 @@ export default class Dashboard extends React.Component<any, any> {
     )
   }
 }
+
+export default withRouter(Dashboard);
