@@ -4,7 +4,7 @@
 
 import { gql } from 'react-apollo';
 
-const LoginUserQuery = gql`
+const LoginUserMutation = gql`
   mutation LoginUserQuery ($data: LoginUserInput!) {
   loginUser(input: $data) {
     token
@@ -15,4 +15,4 @@ const LoginUserQuery = gql`
     }
   }
 }`;
-export default LoginUserQuery
+export default LoginUserMutation

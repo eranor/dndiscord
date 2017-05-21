@@ -22,17 +22,23 @@ declare module 'microseconds' {
   }
 
   export function now(): number;
+
   export function parse(timeStamp: number): DateObject;
+
   export function since(timeStamp: number): number;
 }
 
 declare module 'koa-helmet' {
   import { Middleware } from 'koa';
 
-  export default function(): Middleware;
+  export default function (): Middleware;
 }
 
 declare module '*.svg' {
   const _: string;
   export default _;
+}
+
+declare module 'react-collapsible' {
+  export default class Collapsible extends React.Component<any, any> {}
 }

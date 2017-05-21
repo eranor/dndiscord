@@ -6,23 +6,24 @@ import { Paper } from 'material-ui';
 import { Helmet } from 'react-helmet';
 import LoginForm from './LoginForm';
 import { graphql } from 'react-apollo';
-import LoginUserQuery from './LoginUserQuery';
 import { withRouter } from 'react-router-dom';
 import { SubmissionError } from 'redux-form';
+import LoginUserMutation from './LoginUserQuery';
+import { errorsDict } from '../SignUp/errors';
 
 class Login extends React.Component<any, any> {
 
   constructor(props: any, context: any) {
     super(props, context);
     this.state = {
-      errors: [],
+      errors: []
     }
   }
 
   submit = (values: any) => {
     return this.props.login({
       username: values.username,
-      password: values.password,
+      password: values.password
     }).then(({ data }: any) => {
       if (!data.errors) {
         localStorage.setItem('token', data.loginUser.token);
@@ -33,12 +34,6 @@ class Login extends React.Component<any, any> {
         console.log(data.errors);
       }
     }).catch((errors: any) => {
-      const errorsDict: any = {
-        'GraphQL error: Could not find a user with that username': {
-          username: 'User does not exist', _error: 'Login failed!',
-        },
-        'GraphQL error: Invalid password.': { password: 'Invalid Password', _error: 'Login failed!' },
-      };
       throw new SubmissionError(errorsDict[errors.message]);
     });
   };
@@ -64,14 +59,14 @@ class Login extends React.Component<any, any> {
   }
 }
 
-const LoginWithData = graphql(LoginUserQuery, {
+const LoginWithData = graphql(LoginUserMutation, {
   props: ({ mutate }) => ({
     login: (data: any) => mutate({
       variables: {
-        data,
-      },
-    }),
-  }),
+        data
+      }
+    })
+  })
 })(Login);
 
 export default withRouter(LoginWithData);

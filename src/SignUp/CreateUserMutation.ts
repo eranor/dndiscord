@@ -11,9 +11,9 @@ mutation CreateUserMutation($data: CreateUserInput!) {
     changedUser {
       id
       username
-      firstName
-      lastName      
-      lastLogin
+      email
+      lastName 
+      firstName 
     }
   }
 }`;

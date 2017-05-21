@@ -10,7 +10,10 @@ import 'isomorphic-fetch';
 // React parts
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+const injectTapEventPlugin = require('react-tap-event-plugin');
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 // Browser routing
 import { BrowserRouter } from 'react-router-dom';
 
@@ -23,7 +26,7 @@ import { browserClient } from 'kit/lib/apollo';
 
 // Material UI Theme provider
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-const injectTapEventPlugin = require('react-tap-event-plugin');
+
 
 // Custom redux store creator.  This will allow us to create a store 'outside'
 // of Apollo, so we can apply our own reducers and make use of the Redux dev
@@ -47,6 +50,7 @@ const store = createNewStore(client);
 // (i.e. if we're in development), then we'll wrap the whole thing in an
 // <AppContainer>.  Otherwise, we'll jump straight to the browser router
 function doRender() {
+
   ReactDOM.render(
     <Root />,
     document.getElementById('main'),
@@ -60,9 +64,7 @@ function doRender() {
 // we'll wrap the whole thing in <AppContainer> so that our views can respond
 // to code changes as needed
 const Root = (() => {
-  // Needed for onTouchTap
-  // http://stackoverflow.com/a/34015469/988941
-  injectTapEventPlugin();
+
   // Wrap the component hierarchy in <BrowserRouter>, so that our children
   // can respond to route changes
 

@@ -72,7 +72,6 @@ import { serverClient } from 'kit/lib/apollo';
 import createNewStore from 'kit/lib/redux';
 
 // Import Roboto font
-require('typeface-roboto');
 
 // Initial view to send back HTML render
 import Html from 'kit/views/ssr';
@@ -183,8 +182,7 @@ const PORT = process.env.PORT || 4000;
         // TODO we've used rudimentary console logging here.  In your own
         // app, I'd recommend you implement third-party logging so you can
         // capture errors properly
-
-        console.log('Error', e.message);
+        console.log('Error', e);
         ctx.body = 'There was an error. Please try again later.';
       }
     })

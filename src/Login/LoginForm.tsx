@@ -2,15 +2,16 @@
  * Created by Ákos on 2017. 05. 06.
  */
 import * as React from 'react';
-import { Field, Form, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { TextField, RaisedButton } from 'material-ui';
 import { Validators } from '../utils/index';
 
 class CustomField extends React.Component<any, any> {
   render() {
-    const { input, label, type, meta: { touched, error }, ...custom } = this.props;
+    const { input, label, type, meta: { touched, error } } = this.props;
     return (
-      <TextField fullWidth floatingLabelText={label} type={type} errorText={touched && error} {...input} {...custom}/>
+      <TextField fullWidth floatingLabelText={label} type={type}
+                 errorText={touched && error} {...input} {...this.props.custom}/>
     );
   }
 }
@@ -27,7 +28,7 @@ class LoginForm extends React.Component<any, any> {
                  validate={[Validators.required, Validators.minLength(8)]}/>
           {error && <strong>{error}</strong>}
         </div>
-        <div className="row" style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <div className="row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <RaisedButton type="submit" label="Submit" disabled={submitting}/>
         </div>
       </form>
@@ -36,6 +37,6 @@ class LoginForm extends React.Component<any, any> {
 }
 
 export default reduxForm({
-  form: 'loginForm',
+  form: 'loginForm'
 })(LoginForm);
 

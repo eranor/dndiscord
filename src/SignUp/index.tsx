@@ -2,7 +2,8 @@
  * Created by Ákos on 2017. 05. 03.
  */
 import * as React from 'react';
-import { Paper, StepLabel, Step, Stepper, RaisedButton } from 'material-ui';
+import { Paper } from 'material-ui';
+import { Stepper, StepLabel, Step } from 'material-ui/Stepper';
 import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { graphql } from 'react-apollo';
@@ -11,6 +12,9 @@ import CreateUserMutation from './CreateUserMutation';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import SignUpForm from './SignUpForm';
 import ChooseUserTypeForm from './ChooseUserTypeForm';
+import { SubmissionError } from 'redux-form';
+import AddUserToRoleMutation from './AddRoleToUserMutation';
+import { errorsDict } from './errors';
 
 class SignUp extends React.Component<any, any> {
 
@@ -19,7 +23,7 @@ class SignUp extends React.Component<any, any> {
     this.state = {
       loading: false,
       finished: false,
-      stepIndex: 0,
+      stepIndex: 0
     };
   }
 
@@ -48,38 +52,70 @@ class SignUp extends React.Component<any, any> {
     }
   };
 
-  submit = (...args: any[]) => {
+  submit = (args: any) => {
     const { stepIndex } = this.state;
     switch (stepIndex) {
       case 0: {
-        this.signUp.
+        return this.props.signUp({
+          username: args.username, password: args.password, email: args.email, firstName: args.firstName,
+          lastName: args.lastName
+        }).then(({ data }: any) => {
+          if (!data.errors) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.changedUser));
+            this.setState({ errors: [] });
+          } else {
+            console.log(data.errors);
+          }
+        }).catch((errors: any) => {
+          console.log(errors);
+          throw new SubmissionError(errorsDict[errors.message]);
+        });
       }
       case 1: {
-
+        console.log(args);
+        return this.props.getRoleId({ where: { id: { eq: args.role } } })
+                   .then(({ data }: any) => {
+                       return this.props.addRole({
+                         userId: this.state.user.id, roleId: data.viewer.allRoles.edges[0].node.id
+                       }).then(({ data }: any) => {
+                         if (!data.errors) {
+                           localStorage.setItem('token', data.loginUser.token);
+                           localStorage.setItem('user', JSON.stringify(data.loginUser.user));
+                           this.setState({ errors: [] });
+                           this.props.history.push('/dashboard');
+                         } else {
+                           console.log(data.errors);
+                         }
+                       }).catch((errors: any) => {
+                         throw new SubmissionError(errorsDict[errors.message]);
+                       })
+                     }
+                   ).catch((errors: any) => {
+              throw new SubmissionError(errorsDict[errors.message]);
+            }
+          );
       }
       default: {
         console.log('You shouldn\'t be here')
       }
     }
-    console.log(args);
     this.setState({
       loading: false,
       stepIndex: stepIndex + 1,
-      finished: stepIndex >= 2,
+      finished: stepIndex >= 2
     })
   };
 
   renderContent = () => {
-    const { finished, stepIndex, } = this.state;
-    const { dispatch } = this.props;
+    const { finished, stepIndex } = this.state;
     if (finished) {
       return (
         <p>
           <a href="#" onClick={(event) => {
             event.preventDefault();
             this.setState({ stepIndex: 0, finished: false });
-          }}
-          >
+          }}>
             Click here
           </a> to reset the example.
         </p>
@@ -122,22 +158,13 @@ class SignUp extends React.Component<any, any> {
 
 const CreateUserWithData = graphql(CreateUserMutation, {
   props: ({ mutate }) => ({
-    signUp: (data: any) => mutate({
-      variables: {
-        data,
-      },
-    }),
-  }),
-})(connect()(SignUp));
+    signUp: (data: any) => mutate({ variables: { data } })
+  })
+})(connect()(withRouter(SignUp)));
 
-
-const AddRoleToUser = graphql(CreateUserMutation, {
+const AddRoleToUser = graphql(AddUserToRoleMutation, {
   props: ({ mutate }) => ({
-    addRole: (data: any) => mutate({
-      variables: {
-        data,
-      },
-    }),
-  }),
+    addRole: (data: any) => mutate({ variables: { data } })
+  })
 })(CreateUserWithData);
 export default AddRoleToUser;

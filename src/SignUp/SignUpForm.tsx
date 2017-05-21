@@ -2,15 +2,16 @@
  * Created by Ákos on 2017. 05. 06.
  */
 import * as React from 'react';
-import { Field, reduxForm, submit } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { TextField, RaisedButton } from 'material-ui';
 import { Validators } from 'src/utils';
 
 class CustomField extends React.Component<any, any> {
   render() {
-    const { input, label, type, meta: { touched, error }, ...custom } = this.props;
+    const { input, label, type, meta: { touched, error } } = this.props;
     return (
-      <TextField fullWidth floatingLabelText={label} type={type} errorText={touched && error} {...input} {...custom}/>
+      <TextField fullWidth floatingLabelText={label} type={type}
+                 errorText={touched && error} {...input} {...this.props.custom}/>
     );
   }
 }
@@ -65,20 +66,19 @@ class SignUpForm extends React.Component<any, any> {
                 </div>
                 {error && <strong>{error}</strong>}
               </div>
-              <div className="row" style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <div className="row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <RaisedButton label={buttonLabel} primary={true} type="submit"/>
               </div>
             </form>
           </div>
         </div>
       </div>
-    )
-      ;
+    );
   }
 }
 
 export default reduxForm({
   form: 'signUpForm',
-  validate,
+  validate
 })(SignUpForm);
 
