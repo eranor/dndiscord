@@ -3,25 +3,25 @@
  */
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { RadioButtonGroup, RadioButton, RaisedButton, CircularProgress } from 'material-ui';
+import { RadioButtonGroup, RadioButton, RaisedButton } from 'material-ui';
 import { Validators } from 'src/utils';
-import { graphql } from 'react-apollo';
-import { gql } from 'react-apollo';
+//import { graphql } from 'react-apollo';
+//import { gql } from 'react-apollo';
 
-const GetRoleIDByNameQuery = gql`
-  query GetRoleIDByNameQuery($data: RoleWhereArgs!) {
-    viewer {
-      allRoles(where: $data) {
-        edges {
-          node {
-            id
-            name
-          }
-        }
-      }
-    }
-  }`;
-
+/*const GetRoleIDByNameQuery = gql`
+ query GetRoleIDByNameQuery($data: RoleWhereArgs!) {
+ viewer {
+ allRoles(where: $data) {
+ edges {
+ node {
+ id
+ name
+ }
+ }
+ }
+ }
+ }`;
+ */
 const renderRadioGroup = ({ input, ...rest }: any) => {
   rest;
   return (
@@ -30,31 +30,35 @@ const renderRadioGroup = ({ input, ...rest }: any) => {
   );
 };
 
-@graphql(GetRoleIDByNameQuery, () => ({ variables: { first: 2 } }))
+//@graphql(GetRoleIDByNameQuery, () => ({ variables: { first: 2 } }))
 class SignUpForm extends React.Component<any, any> {
 
   constructor(props: any, context: any) {
     super(props, context);
+    this.state = {
+      roles: [
+        { node: { id: 'Um9sZToy', name: 'DM' } },
+        { node: { id: 'Um9sZTox', name: 'Player' } }
+      ]
+    }
 
   }
 
   render() {
-    const { data, error, handleSubmit, buttonLabel, submitting } = this.props;
-    const roles = data.viewer && data.viewer.allRoles.edges;
+    const { error, handleSubmit, buttonLabel, submitting } = this.props;
+    const { roles } = this.state;
     return (
       <div>
         <div className="row">
           <div className="col s12">
             <form onSubmit={handleSubmit}>
-              {data.loading ? <CircularProgress mode="indeterminate"/> :
-                <Field name="role" component={renderRadioGroup} validate={Validators.required} defaultSelected="Player">
-                  {
-                    roles && roles.map((item: any, idx: any) =>
-                      <RadioButton key={idx} data-id={item.node.id} value={item.node.name} label={item.node.name}/>
-                    )
-                  }
-                </Field>
-              }
+              <Field name="role" component={renderRadioGroup} validate={Validators.required} defaultSelected="Player">
+                {
+                  roles && roles.map((item: any, idx: any) =>
+                    <RadioButton key={idx} value={item.node.name} label={item.node.name}/>
+                  )
+                }
+              </Field>
               {error && <strong>{error}</strong>}
               <div className="row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <RaisedButton label={buttonLabel} disabled={submitting} primary={true} type="submit"/>

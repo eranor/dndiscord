@@ -13,8 +13,8 @@ import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import SignUpForm from './SignUpForm';
 import ChooseUserTypeForm from './ChooseUserTypeForm';
 import { SubmissionError } from 'redux-form';
-import AddUserToRoleMutation from './AddRoleToUserMutation';
 import { errorsDict } from './errors';
+import AddAccountType from './AddRoleToUserMutation';
 
 class SignUp extends React.Component<any, any> {
 
@@ -61,9 +61,14 @@ class SignUp extends React.Component<any, any> {
           lastName: args.lastName
         }).then(({ data }: any) => {
           if (!data.errors) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.changedUser));
-            this.setState({ errors: [] });
+            localStorage.setItem('user', JSON.stringify(data.createUser.changedUser));
+            localStorage.setItem('token', data.createUser.token);
+            this.setState({
+              errors: [],
+              loading: false,
+              stepIndex: stepIndex + 1,
+              finished: stepIndex > 2
+            })
           } else {
             console.log(data.errors);
           }
@@ -73,38 +78,30 @@ class SignUp extends React.Component<any, any> {
         });
       }
       case 1: {
-        console.log(args);
-        return this.props.getRoleId({ where: { id: { eq: args.role } } })
-                   .then(({ data }: any) => {
-                       return this.props.addRole({
-                         userId: this.state.user.id, roleId: data.viewer.allRoles.edges[0].node.id
-                       }).then(({ data }: any) => {
-                         if (!data.errors) {
-                           localStorage.setItem('token', data.loginUser.token);
-                           localStorage.setItem('user', JSON.stringify(data.loginUser.user));
-                           this.setState({ errors: [] });
-                           this.props.history.push('/dashboard');
-                         } else {
-                           console.log(data.errors);
-                         }
-                       }).catch((errors: any) => {
-                         throw new SubmissionError(errorsDict[errors.message]);
-                       })
-                     }
-                   ).catch((errors: any) => {
-              throw new SubmissionError(errorsDict[errors.message]);
-            }
-          );
+        const user = JSON.parse(localStorage.getItem('user')!);
+        return this.props.addRole({
+          accountType: args.role, id: user.id
+        }).then(({ data }: any) => {
+          if (!data.errors) {
+            localStorage.setItem('user', JSON.stringify(data.updateUser.changedUser));
+            this.setState({ errors: [] });
+            this.setState({
+              loading: false,
+              stepIndex: stepIndex + 1,
+              finished: stepIndex > 2
+            });
+            this.props.history.push('/dashboard');
+          } else {
+            console.log(data.errors);
+          }
+        }).catch((errors: any) => {
+          throw new SubmissionError(errorsDict[errors.message]);
+        })
       }
       default: {
         console.log('You shouldn\'t be here')
       }
     }
-    this.setState({
-      loading: false,
-      stepIndex: stepIndex + 1,
-      finished: stepIndex >= 2
-    })
   };
 
   renderContent = () => {
@@ -162,7 +159,7 @@ const CreateUserWithData = graphql(CreateUserMutation, {
   })
 })(connect()(withRouter(SignUp)));
 
-const AddRoleToUser = graphql(AddUserToRoleMutation, {
+const AddRoleToUser = graphql(AddAccountType, {
   props: ({ mutate }) => ({
     addRole: (data: any) => mutate({ variables: { data } })
   })

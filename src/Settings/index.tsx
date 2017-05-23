@@ -9,6 +9,9 @@ export default class Settings extends React.Component<any, any> {
 
   constructor(props: any, context: any) {
     super(props, context);
+    this.state = {
+      user: JSON.parse(localStorage.getItem('user')!)
+    }
   }
 
   public render(): any {
@@ -50,16 +53,17 @@ export default class Settings extends React.Component<any, any> {
                   </CardText>
                 </Card>
               </div>
-              <div className="col s12 m6 l6">
-                <Card>
-                  <CardTitle>
-                    Dungeon Master Settings
-                  </CardTitle>
-                  <CardText>
+              {this.state.user.accountType == 'DM' ?
+                <div className="col s12 m6 l6">
+                  <Card>
+                    <CardTitle>
+                      Dungeon Master Settings
+                    </CardTitle>
+                    <CardText>
 
-                  </CardText>
-                </Card>
-              </div>
+                    </CardText>
+                  </Card>
+                </div> : ''}
             </div>
           </div>
         </Paper>

@@ -3,18 +3,10 @@
  */
 import * as React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { TextField, RaisedButton } from 'material-ui';
+import { RaisedButton } from 'material-ui';
 import { Validators } from 'src/utils';
+import CustomField from '../Login/CustomField';
 
-class CustomField extends React.Component<any, any> {
-  render() {
-    const { input, label, type, meta: { touched, error } } = this.props;
-    return (
-      <TextField fullWidth floatingLabelText={label} type={type}
-                 errorText={touched && error} {...input} {...this.props.custom}/>
-    );
-  }
-}
 
 const validate = (values: any) => {
   const errors: any = {};

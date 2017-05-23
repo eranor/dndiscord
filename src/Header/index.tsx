@@ -38,8 +38,14 @@ class Header extends React.Component<any, any> {
                 onLeftIconButtonTouchTap={this.handleToggle}
                 iconElementLeft={<IconButton> <i className="material-icons">menu</i> </IconButton>}
                 iconElementRight={
-                  localStorage.token ?
-                    <div className="hide-on-small-only"><RaisedButton onClick={this.logoutUser} label="Logout"/></div> :
+                  localStorage.getItem('token') ?
+                    <div className="hide-on-small-only">
+                      <Link to="/dashboard"><RaisedButton label="Dashboard"/></Link>
+                      &nbsp;
+                      <Link to="/settings"><RaisedButton label="Settings"/></Link>
+                      &nbsp;
+                      <RaisedButton onClick={this.logoutUser} label="Logout"/>
+                    </div> :
                     <div className="hide-on-small-only">
                       <Link to='/signup'><RaisedButton label='Sign up'/></Link>
                       <Link to='/login'><FlatButton label='Login'/></Link>
@@ -52,7 +58,7 @@ class Header extends React.Component<any, any> {
           open={this.state.open}
           onRequestChange={(open) => this.setState({ open })}
         >
-          {localStorage.token ?
+          {localStorage.getItem('token') ?
             <div>
               <div className="hide-on-med-and-up">
                 <MenuItem onTouchTap={this.logoutUser}>Logout</MenuItem>

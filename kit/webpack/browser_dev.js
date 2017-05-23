@@ -65,7 +65,7 @@ export default new WebpackConfig().extend({
 
     // Enables compression to better represent build sizes
     compress: true,
-
+    public: 'dndiscord.eranor.me',
     // Assume app/public is the root of our dev server
     publicPath: '/',
 

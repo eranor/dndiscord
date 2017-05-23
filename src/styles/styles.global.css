@@ -18,7 +18,7 @@ html, body{
   margin: 0;
 }
 
-body > div > div {
+body > div#main > div {
   display: flex;
   min-height: 100vh;
   flex-direction: column;

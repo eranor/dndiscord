@@ -4,19 +4,26 @@
 
 import { gql } from 'react-apollo';
 
-const AddUserToRoleMutation = gql`
-mutation AddUserToRoleMutation($data: AddToUserRolesConnectionInput!) {
-  addToUserRolesConnection(input: $data) {
-      changedUserRoles{
-        role{
-          id
-          name
+const AddAccountType = gql`
+mutation AddAccountType($data: UpdateUserInput!){
+  updateUser(input:$data){
+    changedUser{
+      id
+      username
+      firstName
+      lastName
+      email
+      lastLogin
+      accountType
+      roles{
+        edges{
+          node{
+            id
+            name
+          }
         }
-        user{      
-          id
-          username
-        }
-      }
+      }      
+    }
   }
 }`;
-export default AddUserToRoleMutation
+export default AddAccountType

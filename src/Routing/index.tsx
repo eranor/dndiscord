@@ -7,6 +7,7 @@ import SignUp from '../SignUp/index';
 import Dashboard from '../Dashboard/index';
 import Settings from '../Settings/index';
 import NotFoundPage from '../NotFound/index';
+import Encounter from '../Encounter/index';
 
 
 const routes: Array<any> = [
@@ -40,6 +41,12 @@ const routes: Array<any> = [
     protectedPath: true,
     header: () => <Header title="Settings"/>,
     main: () => <Settings title="Settings"/>,
+  },
+  {
+    path: '/encounter',
+    protectedPath: true,
+    header: () => <Header title="Encounter"/>,
+    main: () => <Encounter title="Encounter"/>,
   },
   {
     protectedPath: false,
